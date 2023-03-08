@@ -115,25 +115,13 @@ function load_email(id) {
   .then(response => response.json())
   .then(email => {
 
-    //create div for email view
-    let view = document.createElement('div');
-    view.innerHTML = `
-    <div class="container-fluid"> <b>From:</b> ${email['sender']} </div>
-    <div class="container-fluid"> <b>To:</b> ${email['recipients']} </div>
-    <div class="container-fluid"> <b>Subject:</b> ${email['subject']} </div>
-    <div class="container-fluid"> <b>Timestamp:</b> ${email['timestamp']} </div>
-    <hr>
-    <div class="container-fluid"> ${email['body']} </div>
-    `
 
-    // append view to email-view
-    document.querySelector('#email-view').append(view);
-    
+
     // create archive button
-    let archiveButton = document.createElement('button');
-    archiveButton.className = "btn btn-sm btn-outline-primary";
+    archiveButton = document.createElement('button');
+    archiveButton.className = "btn btn-sm btn-outline-primary order-1";
     archiveButton.innerHTML = !email['archived'] ? "Archive" : "Unarchive";
-    archiveButton.addEventListener(click, function() {
+    archiveButton.addEventListener('click', function() {
       fetch('/emails/' + id, {
         method: 'PUT',
         body: JSON.stringify({ archived : !email['archived'] })
@@ -141,8 +129,27 @@ function load_email(id) {
         // Load the Inbox mailbox 
       load_mailbox('inbox');
     });
-    // append archiveButton to email-view
+
+    // only append archiveButton to email-view if it's not send by request.user
+    // if (email['sender'] != request.user.email) {
     document.querySelector('#email-view').append(archiveButton);
+    //};
+
+
+    //email view
+    const view = document.createElement('div');
+    view.innerHTML = `
+    <div class="container-fluid"> <b>From:</b> ${email['sender']} </div>
+    <div class="container-fluid"> <b>To:</b> ${email['recipients']} </div>
+    <div class="container-fluid"> <b>Subject:</b> ${email['subject']} </div>
+    <div class="container-fluid"> <b>Timestamp:</b> ${email['timestamp']} </div>
+    <hr>
+    <div class="container-fluid order-2"> ${email['body']} </div>
+    `
+    // append archiveButton to email-view
+    document.querySelector('#email-view').append(view);
+
+
   });
 
 
