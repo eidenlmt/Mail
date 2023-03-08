@@ -1,0 +1,11 @@
+textarea {
+    min-height: 400px;
+}
+
+.email-item {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.read {
+    background-color: gray;
+}
