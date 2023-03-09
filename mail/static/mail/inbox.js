@@ -117,7 +117,7 @@ function load_email(id) {
 
     // create reply button
     replyButton = document.createElement('button');
-    replyButton.className = "reply btn btn-sm btn-outline-primary";
+    replyButton.className = "btn btn-sm btn-outline-primary";
     replyButton.innerHTML = "Reply"
     replyButton.addEventListener('click', function() {
         // Load the compose_email form and pre-fill it
@@ -132,7 +132,7 @@ function load_email(id) {
 
     // create archive button
     archiveButton = document.createElement('button');
-    archiveButton.className = "archive btn btn-sm btn-outline-primary";
+    archiveButton.className = "btn btn-sm btn-outline-primary";
     archiveButton.innerHTML = !email['archived'] ? "Archive" : "Unarchive";
     archiveButton.addEventListener('click', function() {
       fetch('/emails/' + id, {
