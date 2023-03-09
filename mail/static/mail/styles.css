@@ -9,3 +9,11 @@ textarea {
 .read {
     background-color: gray;
 }
+
+.timestamp {
+    text-align: end;
+}
+
+.reply .archive {
+    margin: 2px !important;
+}

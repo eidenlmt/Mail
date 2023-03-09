@@ -76,9 +76,9 @@ function load_mailbox(mailbox) {
       let div = document.createElement('div');
       div.className = "email-item row";
       div.innerHTML = `
-      <span class="col text-start"> <b>${email['sender']}</b> </span>
-      <span class="col-5 text-start"> ${email['subject']} </span>
-      <span class="col text-end"> ${email['timestamp']} </span>
+      <span class="sender col"> <b>${email['sender']}</b> </span>
+      <span class="subject col-5"> ${email['subject']} </span>
+      <span class="timestamp col"> ${email['timestamp']} </span>
       `;
 
     // Change background-color
@@ -105,7 +105,6 @@ function load_email(id) {
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
-
   // clear out email-view
   document.querySelector('#email-view').innerHTML = '';
 
@@ -116,10 +115,24 @@ function load_email(id) {
   .then(email => {
 
 
+    // create reply button
+    replyButton = document.createElement('button');
+    replyButton.className = "reply btn btn-sm btn-outline-primary";
+    replyButton.innerHTML = "Reply"
+    replyButton.addEventListener('click', function() {
+        // Load the compose_email form and pre-fill it
+      compose_email();
+      document.querySelector('#compose-recipients').value = `${email['sender']}`;
+      document.querySelector('#compose-subject').value = `re: ${email['subject']}`;
+      document.querySelector('#compose-body').value = `On ${email['timestamp']} ${email['sender']} wrote: ${email['body']}`;
+    });
+    // append replyButton to email-view
+    document.querySelector('#email-view').append(replyButton);
+
 
     // create archive button
     archiveButton = document.createElement('button');
-    archiveButton.className = "btn btn-sm btn-outline-primary order-1";
+    archiveButton.className = "archive btn btn-sm btn-outline-primary";
     archiveButton.innerHTML = !email['archived'] ? "Archive" : "Unarchive";
     archiveButton.addEventListener('click', function() {
       fetch('/emails/' + id, {
@@ -129,11 +142,10 @@ function load_email(id) {
         // Load the Inbox mailbox 
       load_mailbox('inbox');
     });
-
     // only append archiveButton to email-view if it's not send by request.user
     // if (email['sender'] != request.user.email) {
     document.querySelector('#email-view').append(archiveButton);
-    //};
+     //};
 
 
     //email view
